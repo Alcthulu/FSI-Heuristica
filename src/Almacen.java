@@ -15,4 +15,8 @@ public class Almacen {
     public void setPilas(Pila[] pilas) {
         Pilas = pilas;
     }
+
+    public boolean colocar(Caja acolocar, int pila){
+        return Pilas[pila].colocar(acolocar);
+    }
 }

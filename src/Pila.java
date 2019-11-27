@@ -35,4 +35,13 @@ public class Pila {
     public void setLimite(int limite) {
         this.limite = limite;
     }
+
+    public boolean colocar(Caja aColocar){
+        if(actual<limite && lBox.get(lBox.size()).getDiaSalida()>=aColocar.getDiaSalida()){
+            lBox.add(aColocar);
+            ++actual;
+            return true;
+        }
+        return false;
+    }
 }
