@@ -7,6 +7,10 @@ public class Caja {
         this.diaSalida = diaSalida;
     }
 
+    public Caja() {
+
+    }
+
     public int getIdentificador() {
         return identificador;
     }

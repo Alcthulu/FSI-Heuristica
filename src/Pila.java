@@ -37,7 +37,13 @@ public class Pila {
     }
 
     public boolean colocar(Caja aColocar){
-        if(actual<limite && lBox.get(lBox.size()).getDiaSalida()>=aColocar.getDiaSalida()){
+        if(!lBox.isEmpty()){
+            if(actual<limite && lBox.get(lBox.size()-1).getDiaSalida()>=aColocar.getDiaSalida()){
+                lBox.add(aColocar);
+                ++actual;
+                return true;
+            }
+        }else{
             lBox.add(aColocar);
             ++actual;
             return true;

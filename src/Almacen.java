@@ -2,21 +2,24 @@ import java.util.List;
 
 public class Almacen {
 
-    private Pila[] Pilas;
+    private Pila[] pilas;
 
     public Almacen() {
-        Pilas = new Pila[5];
+        pilas = new Pila[5];
+        for(int i=0; i<pilas.length; i++){
+            pilas[i] = new Pila();
+        }
     }
 
     public Pila[] getPilas() {
-        return Pilas;
+        return pilas;
     }
 
     public void setPilas(Pila[] pilas) {
-        Pilas = pilas;
+        this.pilas = pilas;
     }
 
     public boolean colocar(Caja acolocar, int pila){
-        return Pilas[pila].colocar(acolocar);
+        return pilas[pila].colocar(acolocar);
     }
 }
