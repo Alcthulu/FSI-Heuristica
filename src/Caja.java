@@ -1,4 +1,6 @@
-public class Caja {
+import java.io.Serializable;
+
+public class Caja implements Serializable {
     private int identificador, diaEntrada, diaSalida;
 
     public Caja(int identificador, int diaEntrada, int diaSalida) {
@@ -33,5 +35,14 @@ public class Caja {
 
     public void setDiaSalida(int diaSalida) {
         this.diaSalida = diaSalida;
+    }
+
+    @Override
+    public String toString() {
+        return "Caja{" +
+                "identificador=" + identificador +
+                ", diaEntrada=" + diaEntrada +
+                ", diaSalida=" + diaSalida +
+                '}';
     }
 }

@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pila {
+public class Pila implements Serializable {
 
     private List<Caja> lBox;
     private int actual, limite;
@@ -49,5 +50,13 @@ public class Pila {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPila{" + lBox.toString()+
+                ", actual=" + actual +
+                ", limite=" + limite +
+                '}';
     }
 }

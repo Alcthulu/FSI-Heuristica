@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
-        Caja cajas[] = new Caja[18];
+        Caja cajas[] = new Caja[22];
         cajas[0] = new Caja(0,1,17);
         cajas[1] = new Caja(1,1,17);
         cajas[2] = new Caja(2,1,17);
@@ -14,7 +14,7 @@ public class Main {
         cajas[6] = new Caja(6,1,17);
         cajas[7] = new Caja(7,1,17);
         cajas[8] = new Caja(8,1,17);
-        cajas[9] = new Caja(9,1,17);
+        cajas[9] = new Caja(9,1,23);
         cajas[10] = new Caja(10,1,17);
         cajas[11] = new Caja(11,1,17);
         cajas[12] = new Caja(12,1,18);
@@ -23,15 +23,19 @@ public class Main {
         cajas[15] = new Caja(14,1,18);
         cajas[16] = new Caja(14,1,18);
         cajas[17] = new Caja(14,1,19);
+        cajas[18] = new Caja(14,1,18);
+        cajas[19] = new Caja(14,1,18);
+        cajas[20] = new Caja(14,1,19);
+        cajas[21] = new Caja(14,1,19);
 
         List<Caja> cajotas = new ArrayList<Caja>();
         for (int i=0; i<cajas.length; i++) {
             cajotas.add(cajas[i]);
         }
 
-        Estado inicio = new Estado(null, cajotas, new Almacen());
+        Estado inicio = new Estado(null, cajotas, new Almacen(),1);
         AEstrella AE = new AEstrella();
-        AE.crearArbol(inicio);
+        AE.crearArbol(inicio) ;
 
 
     }

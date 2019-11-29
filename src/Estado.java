@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Estado {
@@ -7,29 +8,31 @@ public class Estado {
     private List<Caja> listaProduccion;
     private Almacen almacen;
     private List<Estado> predecesores;
+    private double ultimaCaja;
 
-    private int g, h, f;
+    private double g, h, f;
 
-    public Estado(Estado apuntador, List<Caja> listaProduccion, Almacen almacen) {
+    public Estado(Estado apuntador, List<Caja> listaProduccion, Almacen almacen,int ultimoDiaSal) {
         this.apuntador = apuntador;
         this.listaProduccion = listaProduccion;
         this.almacen = almacen;
+        this.ultimaCaja=ultimoDiaSal;
         h = heuristica();
-        f=0;
-        g=0;
-        if(!listaProduccion.isEmpty())
-        creaPredecesores();
+        f=g+h;
+        g=listaProduccion.size();
     }
 
-    private int heuristica() {
-        int mejor=5;
+    private double heuristica() {
+        double mejor=0;
+        double totalH=0;
         Pila pilas[]=almacen.getPilas();
         for (int i=0; i<pilas.length; i++) {
-            if(pilas[i].getActual()<pilas[i].getLimite() && pilas[i].getLimite()-pilas[i].getActual()<mejor){
+            totalH+=pilas[i].getLimite() - pilas[i].getActual();
+            if(pilas[i].getLimite()-pilas[i].getActual()>mejor){
                 mejor=pilas[i].getLimite() - pilas[i].getActual();
             }
         }
-        return mejor;
+        return totalH-mejor+(30/ultimaCaja);
     }
 
     public List<Estado> getPredecesores() {
@@ -64,57 +67,57 @@ public class Estado {
         this.almacen = almacen;
     }
 
-    public int getG() {
+    public double getG() {
         return g;
     }
 
-    public void setG(int g) {
+    public void setG(double g) {
         this.g = g;
     }
 
-    public int getH() {
+    public double getH() {
         return h;
     }
 
-    public void setH(int h) {
+    public void setH(double h) {
         this.h = h;
     }
 
-    public int getF() {
+    public double getF() {
         return f;
     }
 
-    public void setF(int f) {
+    public void setF(double f) {
         this.f = f;
     }
 
-    public boolean creaPredecesores(){
+    public boolean creaPredecesores() throws Exception {
 
         predecesores = new ArrayList<Estado>();
         int nCaja = 0;
         Caja aColocar=new Caja();
+
         do{
 
                 aColocar = listaProduccion.get(nCaja);
                 for (int i = 0; i < 5; i++) {
-                    Almacen nuevoAlmacen = new Almacen();
-                    nuevoAlmacen = almacen;
+                    Almacen nuevoAlmacen = almacen.deepCopy();
                     if (nuevoAlmacen.colocar(aColocar, i)) {
-                       List<Caja> listaNueva=new ArrayList<Caja>();
-                       listaNueva=listaProduccion;
+                       List<Caja> listaNueva=new ArrayList<Caja>(listaProduccion);
+                       int diaSalida=aColocar.getDiaSalida();
                        listaNueva.remove(aColocar);
-                        Estado posible = new Estado(this, listaNueva, nuevoAlmacen);
-                        predecesores.add(posible);
+                       Estado posible = new Estado(this, listaNueva, nuevoAlmacen,diaSalida);
+                       predecesores.add(posible);
                     }
                 }
                 nCaja++;
 
-        }while(predecesores.isEmpty() && nCaja<listaProduccion.size()-1);
+        }while(nCaja<listaProduccion.size());
 
         if(predecesores.size() != 0){
-            listaProduccion.remove(aColocar);
             return true;
         }
         return false;
     }
+
 }

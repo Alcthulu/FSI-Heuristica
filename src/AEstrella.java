@@ -27,13 +27,14 @@ public class AEstrella {
         this.listaCerrada = listaCerrada;
     }
 
-    public void crearArbol(Estado ini){
+    public void crearArbol(Estado ini) throws Exception{
         Estado actual = ini;
-        listaAbierta = new ArrayList<Estado>();
+        if(!actual.getListaProduccion().isEmpty()) actual.creaPredecesores();
         listaAbierta.add(ini);
 
         while (listaAbierta.size()>0){
             int mejor = 0;
+            actual = listaAbierta.get(mejor);
             for( int i = 0; i<listaAbierta.size(); i++){
                 if(listaAbierta.get(i).getF() < listaAbierta.get(mejor).getF()){
                     mejor = i;
@@ -41,30 +42,30 @@ public class AEstrella {
                 }
             }
 
-            if(actual.getListaProduccion().isEmpty()){
-                System.out.println("Done");
-                break;
+            if(actual.getListaProduccion().isEmpty() || actual.getAlmacen().lleno()){
+                System.out.println(actual.getAlmacen().toString());
+                if(actual.getAlmacen().lleno()){
+                    System.out.println("\n\nNo caben : \n\t");
+                    System.out.println(actual.getListaProduccion().toString());
+                }
+                return;
+            }else if(actual.getPredecesores()==null){
+                actual.creaPredecesores();
             }
 
             listaCerrada.add(actual);
-            listaAbierta.remove(actual);
 
-            for (Estado vecino:actual.getPredecesores()) {
-                if(!listaCerrada.contains(vecino)){
-                    int tempG = actual.getG()+1;
-
-                    if(listaAbierta.contains(vecino)){
-                        if(tempG<vecino.getG()){
-                            vecino.setG(tempG);
+            if(actual.getPredecesores()!=null){
+                for(Estado vecino:actual.getPredecesores()) {
+                    if (!listaCerrada.contains(vecino)) {
+                        if (!listaAbierta.contains(vecino)) {
+                            listaAbierta.add(vecino);
                         }
-                    }else {
-                        vecino.setG(tempG);
-                        listaAbierta.add(vecino);
+                        vecino.setF(vecino.getG() + vecino.getH());
                     }
-
-                    vecino.setF(vecino.getG()+vecino.getH());
                 }
             }
+            listaAbierta.remove(actual);
         }
     }
 
